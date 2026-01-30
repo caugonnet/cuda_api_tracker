@@ -259,7 +259,7 @@ def get_api_list_for_version(version: str, api_type: str = "runtime", use_cache:
     if apis and use_cache:
         try:
             with open(cache_path, 'w') as f:
-                json.dump(list(apis), f)
+                json.dump(sorted(apis), f)  # sorted for consistent git diffs
         except Exception:
             pass
     
