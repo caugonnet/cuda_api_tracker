@@ -182,7 +182,3 @@ The scripts check CUDA versions from 7.5 through 13.1.0, including:
 - Archive: https://developer.nvidia.com/cuda-toolkit-archive
 - Runtime API: https://docs.nvidia.com/cuda/cuda-runtime-api/
 - Driver API: https://docs.nvidia.com/cuda/cuda-driver-api/
-
-## License
-
-MIT License - Feel free to use and modify as needed.
