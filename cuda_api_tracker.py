@@ -28,20 +28,36 @@ from html.parser import HTMLParser
 import time
 
 # CUDA versions to check (from oldest to newest)
-# The archive documentation uses these version paths
+# Based on https://developer.nvidia.com/cuda-toolkit-archive
+# Only includes versions with online documentation available
 CUDA_VERSIONS = [
-    "7.5",
-    "8.0.44", "8.0.61",
+    # CUDA 8.x-10.x use short version format (major.minor)
+    "8.0",
     "9.0", "9.1", "9.2",
     "10.0", "10.1", "10.2",
-    "11.0.3", "11.1.1", "11.2.2", "11.3.1", "11.4.4", "11.5.2", "11.6.2", "11.7.1", "11.8.0",
-    "12.0.0", "12.0.1", "12.1.0", "12.1.1", "12.2.0", "12.2.1", "12.2.2",
-    "12.3.0", "12.3.1", "12.3.2", "12.4.0", "12.4.1", "12.5.0", "12.5.1",
+    # CUDA 11.0 uses short format, 11.1+ uses full version
+    "11.0",
+    "11.1.0", "11.1.1",
+    "11.2.0", "11.2.1", "11.2.2",
+    "11.3.0", "11.3.1",
+    "11.4.0", "11.4.1", "11.4.2", "11.4.3", "11.4.4",
+    "11.5.0", "11.5.1", "11.5.2",
+    "11.6.0", "11.6.1", "11.6.2",
+    "11.7.0", "11.7.1",
+    "11.8.0",
+    # CUDA 12.x+
+    "12.0.0", "12.0.1",
+    "12.1.0", "12.1.1",
+    "12.2.0", "12.2.1", "12.2.2",
+    "12.3.0", "12.3.1", "12.3.2",
+    "12.4.0", "12.4.1",
+    "12.5.0", "12.5.1",
     "12.6.0", "12.6.1", "12.6.2", "12.6.3",
     "12.8.0", "12.8.1",
     "12.9.0", "12.9.1",
     "13.0.0", "13.0.1", "13.0.2",
-    "13.1.0",
+    "13.1.0", "13.1.1",
+    # Note: The last version may use main docs URL if not yet in archive
 ]
 
 # Base URLs for documentation
@@ -190,11 +206,16 @@ def get_api_list_for_version(version: str, api_type: str = "runtime", use_cache:
     else:
         api_doc = "cuda-driver-api"
     
-    # Try archive URL first, then latest
+    # Try archive URL first
     urls_to_try = [
         f"{ARCHIVE_BASE}/{version}/{api_doc}/index.html",
         f"{ARCHIVE_BASE}/{version}/{api_doc}/cuda-runtime-api/index.html",
     ]
+    
+    # For the latest version in our list, also try the main docs URL 
+    # (in case it's not yet in the archive)
+    if version == CUDA_VERSIONS[-1]:
+        urls_to_try.append(f"{LATEST_BASE}/{api_doc}/index.html")
     
     apis = set()
     
