@@ -236,7 +236,7 @@ def get_api_list_for_version(version: str, api_type: str = "runtime", use_cache:
         
         # Fetch each group page for more complete coverage
         base_path = base_url.rsplit('/', 1)[0]
-        for link in parser.group_links[:20]:  # Limit to avoid too many requests
+        for link in parser.group_links:  # Fetch all group pages (results are cached)
             if link.startswith('http'):
                 group_url = link
             else:
